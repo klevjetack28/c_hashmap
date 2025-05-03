@@ -4,22 +4,21 @@
 
 #include "../include/hashmap.h"
 
-void setNode(node* node, char* key, int value)
+void setNode(node_t* node, char* key, int value)
 {
     node->key = key;
     node->value = value;
     node->next = NULL;
-    return;
 }
 
-void initializeHashMap(struct hashMap* map)
+void initializeHashMap(hashmap_t* map)
 {
     map->numNodes = 0;
     map->capacity = 8;
-    map->arr = (struct node**)malloc(map->capacity * sizeof(struct node*));
+    map->arr = (node_t**)malloc(map->capacity * sizeof(node_t*));
 }
 
-int hashFunction(struct hashMap* map, char* key)
+int hashFunction(hashmap_t* map, char* key)
 {
     int hash = 5381;
     int c;
@@ -28,35 +27,34 @@ int hashFunction(struct hashMap* map, char* key)
     {
         hash = ((hash << 5) + hash) + c;
     }
-
     return hash % map->capacity;
 }
 
-void insert(struct hashMap* map, char* key, int value)
+void insert(hashmap_t* map, char* key, int value)
 {
     int hash = hashFunction(map, key);
 
-    struct node* newNode = (struct node*)malloc(sizeof(struct node*));
-    setNode(newNode);
+    node_t* newNode = (node_t*)malloc(sizeof(node_t*));
+    setNode(newNode, key, value);
 
-    if (map->arr[hash]->next == NULL)
+    if (map->arr[hash] == NULL)
     {
-        map->arr[hash]->next = newNode;
-    }
-
+        map->arr[hash] = newNode;
+    } 
     else
     {
         map->arr[hash]->next = map->arr[hash];
         map->arr[hash] = newNode;
     }
+    return;
 }
 
-void delete(struct hashMap* map, char* key)
+void delete(hashmap_t* map, char* key)
 {
     int hash = hashFunction(map, key);
 
-    struct node* prevNode = NULL;
-    struct node* currNode = map->arr[hash];
+    node_t* prevNode = NULL;
+    node_t* currNode = map->arr[hash];
 
     while (currNode != NULL)
     {
@@ -78,13 +76,13 @@ void delete(struct hashMap* map, char* key)
     }
 }
 
-int search(struct hashMap* map, char* key);
+int search(hashmap_t* map, char* key)
 {
     int hash = hashFunction(map, key);
 
-    struct node* currNode = map->arr[hash];
+    node_t* currNode = map->arr[hash];
 
-    while (currNode->next != NULL)
+    while (currNode != NULL)
     {
         if (strcmp(currNode->key, key) == 0)
         {

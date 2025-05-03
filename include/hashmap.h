@@ -1,29 +1,30 @@
 #ifndef HASHMAP_H
 #define HASHMAP_H
 
-struct node 
+typedef struct node 
 {
     char* key;
     int value;
     struct node* next;
-};
+} node_t;
 
-struct hashMap
+
+typedef struct hashMap
 {
     int numNodes, capacity;
-    struct node** map;  
-};
+    node_t** arr;  
+} hashmap_t;
 
-void setNode(node* node, char* key, int value);
+void setNode(node_t* node, char* key, int value);
 
-void initializeHashMap(struct hashMap* map);
+void initializeHashMap(hashmap_t* map);
 
-int hash(struct hashMap* map, char* key);
+int hashFunction(hashmap_t* map, char* key);
 
-void insert(struct hashMap* map, char* key, int value);
+void insert(hashmap_t* map, char* key, int value);
 
-void delete(struct hashMap* map, char* key);
+void delete(hashmap_t* map, char* key);
 
-int search(struct hashMap* map, char* key);
+int search(hashmap_t* map, char* key);
 
 #endif // HASHMAP_H
