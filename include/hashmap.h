@@ -27,4 +27,6 @@ void delete(hashmap_t* map, char* key);
 
 int search(hashmap_t* map, char* key);
 
+void rehashing();
+
 #endif // HASHMAP_H
